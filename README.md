@@ -1,99 +1,116 @@
 # Smart Leads Dashboard
 
-A full-stack Lead Management Dashboard built with the MERN stack, TypeScript, and TailwindCSS. This project features a robust authentication system, role-based access control, advanced lead filtering, and a modern, responsive UI.
+A full-stack Lead Management Dashboard built strictly using the **MERN stack, TypeScript, and TailwindCSS**. This project was developed as part of the ServiceHive Full Stack Internship Assignment.
 
-## 🚀 Tech Stack
+## 🚀 Live Demo & Credentials
+* **Frontend (Vercel):** [https://smartleads-coral.vercel.app](https://smartleads-coral.vercel.app) *(Replace with your actual Vercel link!)*
+* **Backend API (Render):** [https://smartleads-f7w4.onrender.com/health](https://smartleads-f7w4.onrender.com/health)
 
-- **Frontend:** React.js, TypeScript, TailwindCSS, Vite, Axios.
-- **Backend:** Node.js, Express.js, TypeScript, MongoDB (Mongoose), JWT, Zod.
-- **Shared:** Shared TypeScript interfaces for consistency across the stack.
-- **DevOps:** Docker, Docker Compose.
+**Test Admin Credentials:**
+- **Email:** `admin@servicehive.com`
+- **Password:** `password123`
 
-## ✨ Key Features
+---
 
-- **Authentication System:** Secure JWT-based registration and login.
-- **Role-Based Access Control (RBAC):**
-  - **Admin:** Can see and manage all leads.
-  - **Sales User:** Can only see and manage leads assigned to them.
-- **Leads Management (CRUD):** Complete lifecycle management for sales leads.
-- **Advanced Filtering & Search:**
-  - Search leads by name or email.
-  - Filter by status (New, Contacted, Qualified, Lost).
-  - Filter by source (Website, Instagram, Referral).
-  - Sorting by latest or oldest entries.
-- **Server-Side Pagination:** Optimized for large datasets with 10 records per page.
-- **CSV Export:** Bulk export selected leads to CSV format.
-- **Modern UI/UX:** Responsive design with loading states, empty states, and form validation, following the provided designs.
+## 🛠️ Tech Stack
+* **Frontend:** React.js, TypeScript (Strict), TailwindCSS (v4), Vite.
+* **Backend:** Node.js, Express.js, TypeScript, MongoDB (Mongoose), JWT, Zod.
+* **Shared Architecture:** NPM Workspaces for shared TypeScript interfaces across the stack.
+* **DevOps:** Docker, Docker Compose.
 
-## 🛠️ Getting Started
+---
 
-### Prerequisites
+## ✨ Features Implemented
 
-- Node.js (v18 or higher)
-- npm or yarn
-- MongoDB (local or cloud instance) OR Docker
+### 1. Authentication System
+* JWT-based authentication flow with secure password hashing (`bcrypt`).
+* Protected React routes and secure Express middleware.
+* **Role-Based Access Control (RBAC):** First user defaults to `Admin`, subsequent users default to `Sales`. 
+  * `Admin` can see all leads.
+  * `Sales` can only see their own assigned leads.
 
-### Local Development
+### 2. Leads Management (CRUD)
+* Full creation, viewing, updating, and deletion of Leads.
+* Contains required fields: Name, Email, Status (`New`, `Contacted`, `Qualified`, `Lost`), Source (`Website`, `Instagram`, `Referral`), and Created At.
 
-1.  **Clone the repository:**
-    ```bash
-    git clone <repository-url>
-    cd ServiceHive
-    ```
+### 3. Advanced Filtering, Search & Pagination
+* **Multiple Concurrent Filters:** Combine Status, Source, and Search seamlessly.
+* **Debounced Search:** Custom `useDebounce` hook implemented on the frontend to prevent excessive API calls while searching by Name or Email.
+* **Sorting:** Sort leads by Latest or Oldest.
+* **Server-Side Pagination:** Strict limit of 10 records per page using MongoDB `skip` and `limit`, returning pagination metadata to the frontend.
 
-2.  **Install dependencies:**
-    ```bash
-    npm install
-    ```
+### 4. Professional UI/UX
+* Fully responsive layout with beautiful Glassmorphism touches.
+* Comprehensive Loading states, Empty States, and Error handling UI.
+* **Bonus Feature: Dark Mode Support!** Fully integrated Dark Mode toggle in the TopBar using Tailwind CSS variable swapping.
 
-3.  **Configure Environment Variables:**
-    - Copy `.env.example` to `.env` in the root (or configure in respective packages).
-    - Ensure `MONGODB_URI` and `JWT_SECRET` are set in `packages/server/.env`.
+### 5. API Standards & Additional Features
+* Complete RESTful API architecture with centralized error handling.
+* Strict request validation using **Zod**.
+* **CSV Export Functionality:** Bulk export selected leads (or all leads) directly to a CSV file from the frontend via the `json2csv` backend endpoint.
 
-4.  **Run the application:**
-    ```bash
-    npm run dev
-    ```
-    This will start both the client (port 5173) and server (port 5000) concurrently.
+---
 
-### Running with Docker
-
-1.  **Start the services:**
-    ```bash
-    docker-compose up --build
-    ```
-    - Client: `http://localhost`
-    - Server API: `http://localhost:5000`
-    - MongoDB: `mongodb://localhost:27017`
-
-## 📂 Project Structure
+## 📂 Project Structure (Monorepo)
 
 ```text
 ServiceHive/
 ├── packages/
-│   ├── client/           # React frontend
-│   ├── server/           # Express backend
-│   └── shared/           # Shared TypeScript types
+│   ├── client/           # React frontend (Vite)
+│   ├── server/           # Express backend (Node)
+│   └── shared/           # Shared TS interfaces (IUser, ILead)
+├── API.md                # Detailed API Documentation
 ├── Dockerfile.client     # Frontend Docker configuration
 ├── Dockerfile.server     # Backend Docker configuration
 ├── docker-compose.yml    # Container orchestration
-└── plan.md               # Original implementation plan
+└── package.json          # Root workspace configuration
 ```
 
-## 🔌 API Endpoints
+---
 
-### Auth
-- `POST /api/auth/register` - Create a new user.
-- `POST /api/auth/login` - Authenticate and get JWT.
-- `GET /api/auth/me` - Get current user profile (Protected).
+## ⚙️ Setup Instructions
 
-### Leads
-- `GET /api/leads` - Fetch leads with pagination, search, and filters (Protected).
-- `POST /api/leads` - Create a new lead (Protected).
-- `GET /api/leads/:id` - Get single lead details (Protected).
-- `PUT /api/leads/:id` - Update lead (Protected).
-- `DELETE /api/leads/:id` - Delete lead (Protected).
-- `GET /api/leads/export` - Export leads to CSV (Protected).
+### Prerequisites
+* Node.js (v20+)
+* Docker & Docker Compose (Optional)
+* MongoDB (Cloud or Local)
 
-## 📄 License
-MIT
+### 1. Local Development (Without Docker)
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd ServiceHive
+   ```
+2. **Install all workspace dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Configure Environment Variables:**
+   Rename `.env.example` to `.env` in the root folder and configure your `MONGODB_URI`.
+4. **Seed the Database (Optional but recommended):**
+   ```bash
+   cd packages/server
+   npx ts-node src/seed.ts
+   cd ../..
+   ```
+5. **Start the Development Servers:**
+   ```bash
+   npm run dev
+   ```
+   *(Frontend: `http://localhost:5173`, Backend: `http://localhost:5000`)*
+
+### 2. Running with Docker Compose
+
+1. **Start the containers:**
+   ```bash
+   docker-compose up --build
+   ```
+2. **Access the application:**
+   * Frontend: `http://localhost`
+   * Backend API: `http://localhost:5000`
+
+---
+
+## 📚 API Documentation
+Please refer to [API.md](./API.md) for detailed endpoint structures, request payloads, and response formats.
