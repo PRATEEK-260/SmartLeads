@@ -3,23 +3,52 @@ import api from '../services/api';
 import type { ILead } from '@service-hive/shared';
 import LeadTable from '../components/leads/LeadTable';
 import AddLeadModal from '../components/leads/AddLeadModal';
+import Pagination from '../components/leads/Pagination';
+import { useDebounce } from '../hooks/useDebounce';
+import { Search, FilterX } from 'lucide-react';
 
 const LeadsList: React.FC = () => {
   const [leads, setLeads] = useState<ILead[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('');
   const [sourceFilter, setSourceFilter] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('Latest');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  // Pagination state
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const [pagination, setPagination] = useState({
+    total: 0,
+    pages: 0,
+    currentPage: 1,
+    limit: 10
+  });
+
+  const debouncedSearch = useDebounce(searchTerm, 500);
 
   const fetchLeads = async () => {
     setIsLoading(true);
     try {
-      const params: any = {};
+      const params: any = {
+        page,
+        limit,
+        sortBy
+      };
       if (statusFilter) params.status = statusFilter;
       if (sourceFilter) params.source = sourceFilter;
+      if (debouncedSearch) params.search = debouncedSearch;
 
       const response = await api.get('/leads', { params });
-      setLeads(response.data);
+      
+      // Handle the new response structure
+      if (response.data.status === 'success') {
+        setLeads(response.data.data.leads);
+        setPagination(response.data.data.pagination);
+      } else {
+        setLeads(response.data);
+      }
     } catch (error) {
       console.error('Error fetching leads:', error);
     } finally {
@@ -29,7 +58,12 @@ const LeadsList: React.FC = () => {
 
   useEffect(() => {
     fetchLeads();
-  }, [statusFilter, sourceFilter]);
+  }, [statusFilter, sourceFilter, debouncedSearch, page, sortBy]);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [statusFilter, sourceFilter, debouncedSearch, sortBy]);
 
   const handleNewLead = () => {
     setIsModalOpen(true);
@@ -60,9 +94,22 @@ const LeadsList: React.FC = () => {
         </div>
       </div>
 
-      {/* Filter Bar */}
+      {/* Filter and Search Bar */}
       <div className="bg-surface p-md rounded-xl shadow-sm border border-outline-variant flex flex-wrap gap-4 items-center">
-        <div className="flex-1 min-w-[200px]">
+        <div className="flex-1 min-w-[300px]">
+          <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Search</label>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-outline w-4 h-4" />
+            <input
+              className="w-full bg-white border border-outline-variant rounded-lg py-2 pl-10 pr-4 font-body-sm text-body-sm focus:ring-primary focus:border-primary outline-none"
+              placeholder="Search by name or email..."
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="min-w-[150px]">
           <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Status</label>
           <select 
             className="w-full bg-white border border-outline-variant rounded-lg py-2 px-3 font-body-sm text-body-sm focus:ring-primary focus:border-primary"
@@ -76,7 +123,7 @@ const LeadsList: React.FC = () => {
             <option value="Lost">Lost</option>
           </select>
         </div>
-        <div className="flex-1 min-w-[200px]">
+        <div className="min-w-[150px]">
           <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Source</label>
           <select 
             className="w-full bg-white border border-outline-variant rounded-lg py-2 px-3 font-body-sm text-body-sm focus:ring-primary focus:border-primary"
@@ -89,11 +136,15 @@ const LeadsList: React.FC = () => {
             <option value="Referral">Referral</option>
           </select>
         </div>
-        <div className="flex-1 min-w-[200px]">
+        <div className="min-w-[150px]">
           <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Sort By</label>
-          <select className="w-full bg-white border border-outline-variant rounded-lg py-2 px-3 font-body-sm text-body-sm focus:ring-primary focus:border-primary">
-            <option>Latest</option>
-            <option>Oldest</option>
+          <select 
+            className="w-full bg-white border border-outline-variant rounded-lg py-2 px-3 font-body-sm text-body-sm focus:ring-primary focus:border-primary"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+          >
+            <option value="Latest">Latest</option>
+            <option value="Oldest">Oldest</option>
           </select>
         </div>
         <button 
@@ -101,14 +152,25 @@ const LeadsList: React.FC = () => {
           onClick={() => {
             setStatusFilter('');
             setSourceFilter('');
+            setSearchTerm('');
+            setSortBy('Latest');
           }}
           title="Clear Filters"
         >
-          <span className="material-symbols-outlined">filter_list_off</span>
+          <FilterX className="w-5 h-5" />
         </button>
       </div>
 
-      <LeadTable leads={leads} isLoading={isLoading} />
+      <div className="bg-surface rounded-xl shadow-sm border border-outline-variant overflow-hidden">
+        <LeadTable leads={leads} isLoading={isLoading} />
+        <Pagination
+          currentPage={pagination.currentPage}
+          totalPages={pagination.pages}
+          totalLeads={pagination.total}
+          limit={pagination.limit}
+          onPageChange={(p) => setPage(p)}
+        />
+      </div>
 
       <AddLeadModal 
         isOpen={isModalOpen} 
