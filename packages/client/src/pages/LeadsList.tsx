@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import type { ILead } from '@service-hive/shared';
 import LeadTable from '../components/leads/LeadTable';
+import AddLeadModal from '../components/leads/AddLeadModal';
 
 const LeadsList: React.FC = () => {
   const [leads, setLeads] = useState<ILead[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('');
   const [sourceFilter, setSourceFilter] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchLeads = async () => {
     setIsLoading(true);
@@ -30,8 +32,7 @@ const LeadsList: React.FC = () => {
   }, [statusFilter, sourceFilter]);
 
   const handleNewLead = () => {
-    console.log('New Lead clicked');
-    alert('New Lead feature coming soon!');
+    setIsModalOpen(true);
   };
 
   return (
@@ -108,6 +109,12 @@ const LeadsList: React.FC = () => {
       </div>
 
       <LeadTable leads={leads} isLoading={isLoading} />
+
+      <AddLeadModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onSuccess={fetchLeads} 
+      />
     </div>
   );
 };
