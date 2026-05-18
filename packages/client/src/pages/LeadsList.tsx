@@ -148,7 +148,7 @@ const LeadsList: React.FC = () => {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-outline w-4 h-4" />
             <input
-              className="w-full bg-white border border-outline-variant rounded-lg py-2 pl-10 pr-4 font-body-sm text-body-sm focus:ring-primary focus:border-primary outline-none"
+              className="w-full bg-surface border border-outline-variant rounded-lg py-2 pl-10 pr-4 font-body-sm text-body-sm focus:ring-primary focus:border-primary outline-none"
               placeholder="Search by name or email..."
               type="text"
               value={searchTerm}
@@ -159,7 +159,7 @@ const LeadsList: React.FC = () => {
         <div className="min-w-[150px]">
           <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Status</label>
           <select 
-            className="w-full bg-white border border-outline-variant rounded-lg py-2 px-3 font-body-sm text-body-sm focus:ring-primary focus:border-primary"
+            className="w-full bg-surface border border-outline-variant rounded-lg py-2 px-3 font-body-sm text-body-sm focus:ring-primary focus:border-primary"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
@@ -173,7 +173,7 @@ const LeadsList: React.FC = () => {
         <div className="min-w-[150px]">
           <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Source</label>
           <select 
-            className="w-full bg-white border border-outline-variant rounded-lg py-2 px-3 font-body-sm text-body-sm focus:ring-primary focus:border-primary"
+            className="w-full bg-surface border border-outline-variant rounded-lg py-2 px-3 font-body-sm text-body-sm focus:ring-primary focus:border-primary"
             value={sourceFilter}
             onChange={(e) => setSourceFilter(e.target.value)}
           >
@@ -186,7 +186,7 @@ const LeadsList: React.FC = () => {
         <div className="min-w-[150px]">
           <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Sort By</label>
           <select 
-            className="w-full bg-white border border-outline-variant rounded-lg py-2 px-3 font-body-sm text-body-sm focus:ring-primary focus:border-primary"
+            className="w-full bg-surface border border-outline-variant rounded-lg py-2 px-3 font-body-sm text-body-sm focus:ring-primary focus:border-primary"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
           >

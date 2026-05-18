@@ -1,12 +1,22 @@
 import React from 'react';
-import { Search, Bell } from 'lucide-react';
+import { Search, Bell, Moon, Sun } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const TopBar: React.FC = () => {
   const { user } = useAuth();
+  const [isDark, setIsDark] = React.useState(() => document.documentElement.classList.contains('dark'));
+
+  const toggleDarkMode = () => {
+    setIsDark(prev => {
+      const next = !prev;
+      if (next) document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+      return next;
+    });
+  };
 
   return (
-    <header className="flex justify-between items-center h-20 px-gutter w-full sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-outline-variant shadow-sm">
+    <header className="flex justify-between items-center h-20 px-gutter w-full sticky top-0 z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant shadow-sm">
       <div className="flex items-center gap-4 flex-1">
         <div className="relative w-full max-w-[500px]">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-outline w-5 h-5" />
@@ -20,9 +30,12 @@ const TopBar: React.FC = () => {
       
       <div className="flex items-center gap-6">
         <div className="relative">
+          <button onClick={toggleDarkMode} className="p-2 text-on-surface-variant hover:text-primary transition-colors">
+            {isDark ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
+          </button>
           <button className="p-2 text-on-surface-variant hover:text-primary transition-colors relative">
             <Bell className="w-6 h-6" />
-            <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+            <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
           </button>
         </div>
         

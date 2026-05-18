@@ -225,7 +225,7 @@ const Dashboard: React.FC = () => {
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-xl">
         {/* Lead Velocity */}
-        <div className="lg:col-span-2 bg-white p-xl rounded-2xl shadow-sm border border-outline-variant">
+        <div className="lg:col-span-2 bg-surface p-xl rounded-2xl shadow-sm border border-outline-variant">
           <div className="flex justify-between items-center mb-lg">
             <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">Lead Velocity</h3>
             <div className="flex items-center gap-2">
@@ -249,7 +249,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Lead Sources */}
-        <div className="bg-white p-xl rounded-2xl shadow-sm border border-outline-variant">
+        <div className="bg-surface p-xl rounded-2xl shadow-sm border border-outline-variant">
           <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold mb-lg">Lead Sources</h3>
           <div className="space-y-8">
             {[
