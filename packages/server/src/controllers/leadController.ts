@@ -20,24 +20,51 @@ const updateLeadSchema = z.object({
 
 export const getLeads = async (req: Request, res: Response) => {
   try {
-    const { status, source } = req.query;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const search = req.query.search as string;
+    const sortBy = req.query.sortBy as string;
+    const status = req.query.status as string;
+    const source = req.query.source as string;
+
     const query: any = {};
 
     if (status) query.status = status;
     if (source) query.source = source;
+    if (search) {
+      query.$or = [
+        { name: new RegExp(search, 'i') },
+        { email: new RegExp(search, 'i') },
+      ];
+    }
 
     // RBAC: Sales only see their own leads
     if (req.user.role === 'Sales') {
       query.assignedTo = req.user.id;
     }
 
-    const leads = await Lead.find(query).populate('assignedTo', 'name email');
+    const skip = (page - 1) * limit;
+    const sort: any = sortBy === 'Oldest' ? { createdAt: 1 } : { createdAt: -1 };
+
+    const totalLeads = await Lead.countDocuments(query);
+    const totalPages = Math.ceil(totalLeads / limit);
+
+    const leads = await Lead.find(query)
+      .populate('assignedTo', 'name email')
+      .sort(sort)
+      .skip(skip)
+      .limit(limit);
 
     res.status(200).json({
       status: 'success',
-      results: leads.length,
       data: {
         leads,
+        pagination: {
+          total: totalLeads,
+          pages: totalPages,
+          currentPage: page,
+          limit,
+        },
       },
     });
   } catch (error: any) {
