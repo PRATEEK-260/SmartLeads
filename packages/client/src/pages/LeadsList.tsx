@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import type { ILead } from '@service-hive/shared';
 import LeadTable from '../components/leads/LeadTable';
@@ -17,6 +18,19 @@ const LeadsList: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedLeadIds, setSelectedLeadIds] = useState<string[]>([]);
   
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Check for new lead query param
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('new') === 'true') {
+      setIsModalOpen(true);
+      // Clean up the URL
+      navigate('/leads', { replace: true });
+    }
+  }, [location, navigate]);
+
   // Pagination state
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
@@ -48,10 +62,12 @@ const LeadsList: React.FC = () => {
         setLeads(response.data.data.leads);
         setPagination(response.data.data.pagination);
       } else {
-        setLeads(response.data);
+        // Fallback for old structure or errors
+        setLeads(Array.isArray(response.data) ? response.data : []);
       }
     } catch (error) {
       console.error('Error fetching leads:', error);
+      setLeads([]);
     } finally {
       setIsLoading(false);
     }

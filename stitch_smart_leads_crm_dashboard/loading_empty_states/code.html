@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .shimmer {
+            background: linear-gradient(90deg, #eff4ff 25%, #e5eeff 50%, #eff4ff 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#fffbff",
+                        "tertiary": "#904900",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#d3e4fe",
+                        "secondary-fixed-dim": "#c3c0ff",
+                        "inverse-surface": "#213145",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "on-secondary-container": "#fffbff",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#464554",
+                        "on-primary-fixed": "#07006c",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#fffbff",
+                        "on-tertiary-fixed": "#301400",
+                        "on-secondary-fixed": "#0f0069",
+                        "primary-fixed": "#e1e0ff",
+                        "surface-container": "#e5eeff",
+                        "primary": "#4648d4",
+                        "background": "#f8f9ff",
+                        "outline": "#767586",
+                        "secondary": "#4b41e1",
+                        "surface-container-highest": "#d3e4fe",
+                        "inverse-on-surface": "#eaf1ff",
+                        "inverse-primary": "#c0c1ff",
+                        "primary-container": "#6063ee",
+                        "surface-container-high": "#dce9ff",
+                        "on-secondary-fixed-variant": "#3323cc",
+                        "secondary-fixed": "#e2dfff",
+                        "surface-tint": "#494bd6",
+                        "on-surface": "#0b1c30",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "surface-container-low": "#eff4ff",
+                        "secondary-container": "#645efb",
+                        "surface-dim": "#cbdbf5",
+                        "surface": "#f8f9ff",
+                        "tertiary-fixed": "#ffdcc5",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c7c4d7",
+                        "tertiary-container": "#b55d00",
+                        "on-background": "#0b1c30",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "on-tertiary-fixed-variant": "#703700"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "md": "16px",
+                        "base": "4px",
+                        "3xl": "64px",
+                        "container-max": "1440px",
+                        "xs": "4px",
+                        "2xl": "48px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full flex flex-col h-screen w-64 border-r border-outline-variant bg-surface z-50">
+<div class="p-lg">
+<div class="font-headline-md text-headline-md font-bold text-primary mb-base">Smart Leads Dashboard</div>
+<div class="font-label-md text-label-md text-on-surface-variant">Admin</div>
+</div>
+<nav class="flex-grow mt-md">
+<a class="flex items-center gap-3 px-4 py-3 text-primary font-bold hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Leads</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<div class="p-lg mt-auto border-t border-outline-variant">
+<button class="w-full bg-primary text-on-primary py-sm px-md rounded-xl font-label-md flex items-center justify-center gap-2 hover:opacity-90 duration-200">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                New Lead
+            </button>
+<a class="flex items-center gap-3 px-4 py-3 mt-md text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Top Navigation -->
+<header class="flex justify-between items-center h-16 px-gutter w-full sticky top-0 z-40 ml-64 w-[calc(100%-16rem)] bg-surface border-b border-outline-variant shadow-sm">
+<div class="flex items-center flex-grow max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-full py-2 pl-10 pr-4 focus:outline-none focus:border-primary" placeholder="Search leads..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<img alt="User Profile" class="w-8 h-8 rounded-full border border-outline-variant" data-alt="A professional close-up studio portrait of a corporate executive with a clean, modern aesthetic. The lighting is bright and even, reflecting a high-key light mode interface style. The background is a soft, neutral grey-blue that complements a professional SaaS application environment. The individual is smiling confidently, wearing business-casual attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7KBqRrxTnmhEZvaeRrQxRSKB-hygU4frkrxJtYKc5WiklDTJPP25VuqriSPyvRUqGMSAJI6dsydV9p1ELP-ouBxZ-Tjd5YaZtDqP9ApcQxHMfRpoOj2RFXTqjHsF2PvPBJxNrseajP2mrRfl4Ttnkf_0Z0qxC672yQrgH7AVprbuVBxt2ZGJ4-XwNc5VrreHWmfHV99o8b9OK-RAXvvWg99CzhHJZHcFNVJkO2DqsR-3jLiyatLtGguFefJC991rYh5XZImn2Qx8"/>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 p-gutter max-w-container-max mx-auto space-y-3xl">
+<!-- Section 1: Dashboard Table Loading Skeleton -->
+<section>
+<div class="flex items-center justify-between mb-lg">
+<div class="space-y-sm">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Overview</h2>
+<div class="w-48 h-4 shimmer rounded-full"></div>
+</div>
+<div class="flex gap-sm">
+<div class="w-24 h-10 shimmer rounded-xl"></div>
+<div class="w-32 h-10 shimmer rounded-xl"></div>
+</div>
+</div>
+<!-- Bento Skeleton Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-2xl">
+<div class="bg-surface p-lg rounded-xl border border-outline-variant shadow-sm space-y-md">
+<div class="w-12 h-12 shimmer rounded-lg"></div>
+<div class="w-1/2 h-6 shimmer rounded-md"></div>
+<div class="w-3/4 h-10 shimmer rounded-md"></div>
+</div>
+<div class="bg-surface p-lg rounded-xl border border-outline-variant shadow-sm space-y-md">
+<div class="w-12 h-12 shimmer rounded-lg"></div>
+<div class="w-1/2 h-6 shimmer rounded-md"></div>
+<div class="w-3/4 h-10 shimmer rounded-md"></div>
+</div>
+<div class="bg-surface p-lg rounded-xl border border-outline-variant shadow-sm space-y-md">
+<div class="w-12 h-12 shimmer rounded-lg"></div>
+<div class="w-1/2 h-6 shimmer rounded-md"></div>
+<div class="w-3/4 h-10 shimmer rounded-md"></div>
+</div>
+</div>
+<!-- Table Skeleton -->
+<div class="bg-surface rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<div class="px-lg py-md border-b border-outline-variant flex items-center justify-between">
+<div class="w-48 h-6 shimmer rounded-md"></div>
+<div class="w-8 h-8 shimmer rounded-full"></div>
+</div>
+<div class="w-full">
+<div class="grid grid-cols-5 gap-gutter p-lg border-b border-outline-variant bg-surface-container-low">
+<div class="w-24 h-4 shimmer rounded-full"></div>
+<div class="w-32 h-4 shimmer rounded-full"></div>
+<div class="w-20 h-4 shimmer rounded-full"></div>
+<div class="w-28 h-4 shimmer rounded-full"></div>
+<div class="w-16 h-4 shimmer rounded-full"></div>
+</div>
+<!-- Skeleton Rows -->
+<div class="divide-y divide-outline-variant">
+<div class="grid grid-cols-5 gap-gutter p-lg items-center">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 shimmer rounded-full shrink-0"></div>
+<div class="w-32 h-4 shimmer rounded-full"></div>
+</div>
+<div class="w-40 h-4 shimmer rounded-full"></div>
+<div class="w-24 h-8 shimmer rounded-full"></div>
+<div class="w-32 h-4 shimmer rounded-full"></div>
+<div class="w-8 h-8 shimmer rounded-full justify-self-end"></div>
+</div>
+<div class="grid grid-cols-5 gap-gutter p-lg items-center">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 shimmer rounded-full shrink-0"></div>
+<div class="w-28 h-4 shimmer rounded-full"></div>
+</div>
+<div class="w-36 h-4 shimmer rounded-full"></div>
+<div class="w-24 h-8 shimmer rounded-full"></div>
+<div class="w-36 h-4 shimmer rounded-full"></div>
+<div class="w-8 h-8 shimmer rounded-full justify-self-end"></div>
+</div>
+<div class="grid grid-cols-5 gap-gutter p-lg items-center">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 shimmer rounded-full shrink-0"></div>
+<div class="w-36 h-4 shimmer rounded-full"></div>
+</div>
+<div class="w-44 h-4 shimmer rounded-full"></div>
+<div class="w-24 h-8 shimmer rounded-full"></div>
+<div class="w-28 h-4 shimmer rounded-full"></div>
+<div class="w-8 h-8 shimmer rounded-full justify-self-end"></div>
+</div>
+<div class="grid grid-cols-5 gap-gutter p-lg items-center">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 shimmer rounded-full shrink-0"></div>
+<div class="w-30 h-4 shimmer rounded-full"></div>
+</div>
+<div class="w-32 h-4 shimmer rounded-full"></div>
+<div class="w-24 h-8 shimmer rounded-full"></div>
+<div class="w-40 h-4 shimmer rounded-full"></div>
+<div class="w-8 h-8 shimmer rounded-full justify-self-end"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Empty State for Leads List -->
+<section class="pb-3xl">
+<div class="mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Lead Pipeline</h2>
+<p class="font-body-md text-on-surface-variant">Track your potential customers through the funnel.</p>
+</div>
+<div class="bg-surface rounded-xl border border-outline-variant shadow-sm p-3xl flex flex-col items-center text-center">
+<div class="relative mb-2xl">
+<!-- Background decorative shape -->
+<div class="absolute inset-0 bg-primary/5 rounded-full scale-150 -z-10 blur-xl"></div>
+<div class="w-48 h-48 bg-surface-container rounded-3xl flex items-center justify-center transform rotate-3 overflow-hidden shadow-lg border border-outline-variant">
+<img alt="Empty state illustration" class="w-32 h-32 object-contain opacity-80" data-alt="A clean, minimalist 3D isometric illustration of an empty white folder with a professional magnifying glass resting against it. The lighting is soft and airy, typical of a modern SaaS interface. Gentle blue and purple accents are scattered as soft geometric particles in the background. The mood is calm and inviting, representing a fresh start or a clean slate in a corporate software environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfnhswhXPeNpQp8m8M_F7zm29I-7Eyb0uv2yjeXqpWiLIz4G_gEL7k139WPGZ6dEc9Bdo5rr0OayLbdo_fL5UKUhmsjnJ3u75mN8wwfBjVzHjoxYH7h_biPYbc2ECBlRXR0yzGMzyht2N0B_tSASKFB1Zd4_hV_hbiYbhypns9DRGLJl_m5R7ZqhBun-vAFANigWNLiBAmobAWTGoX0tbyVnkfSxKq_YzqKKpZwJ6hqzNJIu-xyNVJZGXfEBLA7CcyG0c22Ik9Goc"/>
+</div>
+</div>
+<div class="max-w-md space-y-md">
+<h3 class="font-headline-md text-headline-md text-on-surface">No leads found in your pipeline</h3>
+<p class="font-body-md text-on-surface-variant">It looks like you haven't added any leads yet. Start building your sales pipeline by adding your first prospect or importing a list from CSV.</p>
+</div>
+<div class="mt-2xl flex flex-col sm:flex-row gap-md">
+<button class="bg-primary text-on-primary py-3 px-8 rounded-xl font-headline-sm flex items-center justify-center gap-2 hover:opacity-90 duration-200">
+<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+                        Add Your First Lead
+                    </button>
+<button class="bg-surface border border-outline-variant text-on-surface py-3 px-8 rounded-xl font-headline-sm flex items-center justify-center gap-2 hover:bg-surface-container-low duration-200">
+<span class="material-symbols-outlined" data-icon="upload_file">upload_file</span>
+                        Import from CSV
+                    </button>
+</div>
+<div class="mt-3xl grid grid-cols-1 md:grid-cols-3 gap-lg w-full text-left">
+<div class="p-lg bg-surface-container-low rounded-xl border border-outline-variant">
+<span class="material-symbols-outlined text-primary mb-sm" data-icon="auto_awesome">auto_awesome</span>
+<div class="font-label-md text-on-surface mb-xs">Smart Matching</div>
+<p class="font-body-sm text-on-surface-variant">Automatically score leads based on their interaction history.</p>
+</div>
+<div class="p-lg bg-surface-container-low rounded-xl border border-outline-variant">
+<span class="material-symbols-outlined text-primary mb-sm" data-icon="timeline">timeline</span>
+<div class="font-label-md text-on-surface mb-xs">Velocity Tracking</div>
+<p class="font-body-sm text-on-surface-variant">Monitor how fast leads move through your sales stages.</p>
+</div>
+<div class="p-lg bg-surface-container-low rounded-xl border border-outline-variant">
+<span class="material-symbols-outlined text-primary mb-sm" data-icon="mail">mail</span>
+<div class="font-label-md text-on-surface mb-xs">Email Sequences</div>
+<p class="font-body-sm text-on-surface-variant">Connect your inbox to automate follow-up tasks and logging.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

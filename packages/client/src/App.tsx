@@ -5,13 +5,8 @@ import Register from './pages/Register';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import DashboardLayout from './components/layout/DashboardLayout';
 import LeadsList from './pages/LeadsList';
-
-const DashboardPlaceholder = () => (
-  <div>
-    <h2 className="text-2xl font-bold text-on-surface">Dashboard Overview</h2>
-    <p className="text-on-surface-variant">Welcome back! Here's what's happening today.</p>
-  </div>
-);
+import Dashboard from './pages/Dashboard';
+import UsersList from './pages/UsersList';
 
 const SettingsPlaceholder = () => (
   <div>
@@ -29,8 +24,9 @@ function App() {
           <Route path="/register" element={<Register />} />
           
           <Route element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
-            <Route path="/dashboard" element={<DashboardPlaceholder />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/leads" element={<LeadsList />} />
+            <Route path="/users" element={<UsersList />} />
             <Route path="/settings" element={<SettingsPlaceholder />} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
           </Route>

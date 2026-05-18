@@ -18,6 +18,14 @@ const LeadSchema: Schema = new Schema({
   },
   assignedTo: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   createdAt: { type: Date, default: Date.now }
+}, {
+  toJSON: {
+    transform(doc, ret: any) {
+      ret.id = ret._id;
+      delete ret._id;
+      delete ret.__v;
+    },
+  },
 });
 
 export default mongoose.model<ILeadDocument>('Lead', LeadSchema);

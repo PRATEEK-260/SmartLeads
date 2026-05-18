@@ -87,3 +87,17 @@ export const getMe = async (req: any, res: Response) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await User.find().select('-password').sort({ name: 1 });
+    res.status(200).json({
+      status: 'success',
+      data: {
+        users,
+      },
+    });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};

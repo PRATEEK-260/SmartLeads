@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
-import type { LeadStatus, LeadSource } from '@service-hive/shared';
+import { useAuth } from '../../context/AuthContext';
+import type { LeadStatus, LeadSource, IUser } from '@service-hive/shared';
 
 interface AddLeadModalProps {
   isOpen: boolean;
@@ -9,12 +10,31 @@ interface AddLeadModalProps {
 }
 
 const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onSuccess }) => {
+  const { user: currentUser } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<LeadStatus>('New');
   const [source, setSource] = useState<LeadSource>('Website');
+  const [assignedTo, setAssignedTo] = useState('');
+  const [users, setUsers] = useState<IUser[]>([]);
   const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (isOpen && currentUser?.role === 'Admin') {
+      const fetchUsers = async () => {
+        try {
+          const response = await api.get('/auth/users');
+          setUsers(response.data.data.users);
+          // Default to current user if none selected
+          setAssignedTo(currentUser.id);
+        } catch (error) {
+          console.error('Error fetching users:', error);
+        }
+      };
+      fetchUsers();
+    }
+  }, [isOpen, currentUser]);
 
   if (!isOpen) return null;
 
@@ -38,12 +58,18 @@ const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onSuccess 
 
     setIsSubmitting(true);
     try {
-      await api.post('/leads', {
+      const payload: any = {
         name,
         email,
         status,
         source
-      });
+      };
+      
+      if (currentUser?.role === 'Admin' && assignedTo) {
+        payload.assignedTo = assignedTo;
+      }
+
+      await api.post('/leads', payload);
       onSuccess();
       handleClose();
     } catch (error: any) {
@@ -63,14 +89,15 @@ const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onSuccess 
     setEmail('');
     setStatus('New');
     setSource('Website');
+    setAssignedTo(currentUser?.id || '');
     setErrors({});
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       {/* Modal Container */}
-      <div className="w-full max-w-lg bg-surface-container-lowest rounded-xl shadow-[0px_20px_25px_-5px_rgba(0,0,0,0.1),0px_8px_10px_-6px_rgba(0,0,0,0.1)] border border-outline-variant overflow-hidden">
+      <div className="w-full max-w-[512px] min-w-[320px] bg-surface-container-lowest rounded-xl shadow-[0px_20px_25px_-5px_rgba(0,0,0,0.1),0px_8px_10px_-6px_rgba(0,0,0,0.1)] border border-outline-variant overflow-hidden flex flex-col">
         {/* Modal Header */}
         <div className="px-lg py-md border-b border-outline-variant flex items-center justify-between">
           <h2 className="font-headline-sm text-headline-sm text-on-surface">New Lead</h2>
@@ -145,6 +172,23 @@ const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onSuccess 
               </select>
             </div>
           </div>
+
+          {currentUser?.role === 'Admin' && (
+            <div className="space-y-base">
+              <label className="font-label-md text-label-md text-on-surface-variant">Assign To</label>
+              <select 
+                className="w-full px-md py-2.5 rounded-xl border border-outline-variant bg-surface focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-body-md text-body-md appearance-none"
+                value={assignedTo}
+                onChange={(e) => setAssignedTo(e.target.value)}
+              >
+                {users.map((u) => (
+                  <option key={u.id} value={u.id}>
+                    {u.name} ({u.role})
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {/* Modal Actions */}
           <div className="pt-md bg-surface-container-low flex justify-end gap-md">

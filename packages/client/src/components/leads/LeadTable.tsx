@@ -182,21 +182,6 @@ const LeadTable: React.FC<LeadTableProps> = ({ leads, isLoading, selectedIds, on
           </tbody>
         </table>
       </div>
-      {/* Pagination Placeholder */}
-      <div className="px-gutter py-4 flex items-center justify-between border-t border-outline-variant bg-surface-container-low">
-        <span className="font-body-sm text-body-sm text-on-surface-variant">
-          Showing {leads.length} leads
-        </span>
-        <div className="flex items-center gap-1">
-          <button className="p-2 rounded-lg hover:bg-surface-container-high text-on-surface-variant disabled:opacity-50" disabled>
-            <span className="material-symbols-outlined">chevron_left</span>
-          </button>
-          <button className="w-8 h-8 rounded-lg bg-primary text-on-primary font-label-md text-label-md">1</button>
-          <button className="p-2 rounded-lg hover:bg-surface-container-high text-on-surface-variant disabled:opacity-50" disabled>
-            <span className="material-symbols-outlined">chevron_right</span>
-          </button>
-        </div>
-      </div>
     </div>
   );
 };

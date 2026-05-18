@@ -1,3 +1,64 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-error-container: #ffdad6;
+  --color-on-tertiary-container: #fffbff;
+  --color-tertiary: #904900;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+  --color-surface-variant: #d3e4fe;
+  --color-secondary-fixed-dim: #c3c0ff;
+  --color-inverse-surface: #213145;
+  --color-on-primary-fixed-variant: #2f2ebe;
+  --color-on-secondary-container: #fffbff;
+  --color-surface-bright: #f8f9ff;
+  --color-on-tertiary: #ffffff;
+  --color-on-surface-variant: #464554;
+  --color-on-primary-fixed: #07006c;
+  --color-surface-container-lowest: #ffffff;
+  --color-on-primary-container: #fffbff;
+  --color-on-tertiary-fixed: #301400;
+  --color-on-secondary-fixed: #0f0069;
+  --color-primary-fixed: #e1e0ff;
+  --color-surface-container: #e5eeff;
+  --color-primary: #4648d4;
+  --color-background: #f8f9ff;
+  --color-outline: #767586;
+  --color-secondary: #4b41e1;
+  --color-surface-container-highest: #d3e4fe;
+  --color-inverse-on-surface: #eaf1ff;
+  --color-inverse-primary: #c0c1ff;
+  --color-primary-container: #6063ee;
+  --color-surface-container-high: #dce9ff;
+  --color-on-secondary-fixed-variant: #3323cc;
+  --color-secondary-fixed: #e2dfff;
+  --color-surface-tint: #494bd6;
+  --color-on-surface: #0b1c30;
+  --color-on-primary: #ffffff;
+  --color-primary-fixed-dim: #c0c1ff;
+  --color-surface-container-low: #eff4ff;
+  --color-secondary-container: #645efb;
+  --color-surface-dim: #cbdbf5;
+  --color-surface: #f8f9ff;
+  --color-tertiary-fixed: #ffdcc5;
+  --color-error: #ba1a1a;
+  --color-on-secondary: #ffffff;
+  --color-outline-variant: #c7c4d7;
+  --color-tertiary-container: #b55d00;
+  --color-on-background: #0b1c30;
+  --color-tertiary-fixed-dim: #ffb783;
+  --color-on-tertiary-fixed-variant: #703700;
+
+  --radius-card: 10px;
+
+  --spacing-gutter: 24px;
+  --spacing-md: 16px;
+  --spacing-base: 4px;
+  --spacing-3xl: 64px;
+  --spacing-container-max: 1440px;
+  --spacing-xs: 4px;
+  --spacing-2xl: 48px;
+  --spacing-sm: 8px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+}

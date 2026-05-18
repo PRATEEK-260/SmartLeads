@@ -7,3 +7,4 @@ packages/shared/dist
 .env
 *.log
 .DS_Store
+**/*.tsbuildinfo
