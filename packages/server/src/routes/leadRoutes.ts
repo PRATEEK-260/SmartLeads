@@ -12,6 +12,8 @@ router
   .get(leadController.getLeads)
   .post(leadController.createLead);
 
+router.get('/export', leadController.exportLeads);
+
 router
   .route('/:id')
   .get(leadController.getLeadById)

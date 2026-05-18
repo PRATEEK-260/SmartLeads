@@ -4,9 +4,27 @@ import type { ILead } from '@service-hive/shared';
 interface LeadTableProps {
   leads: ILead[];
   isLoading: boolean;
+  selectedIds: string[];
+  onSelectChange: (ids: string[]) => void;
 }
 
-const LeadTable: React.FC<LeadTableProps> = ({ leads, isLoading }) => {
+const LeadTable: React.FC<LeadTableProps> = ({ leads, isLoading, selectedIds, onSelectChange }) => {
+  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      onSelectChange(leads.map((lead) => lead.id));
+    } else {
+      onSelectChange([]);
+    }
+  };
+
+  const handleSelectOne = (id: string) => {
+    if (selectedIds.includes(id)) {
+      onSelectChange(selectedIds.filter((selectedId) => selectedId !== id));
+    } else {
+      onSelectChange([...selectedIds, id]);
+    }
+  };
+
   const getStatusBadgeClass = (status: string) => {
     switch (status) {
       case 'New':
@@ -38,7 +56,10 @@ const LeadTable: React.FC<LeadTableProps> = ({ leads, isLoading }) => {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-surface-container-low border-b border-outline-variant">
-                <th className="px-gutter py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Lead Contact</th>
+                <th className="px-gutter py-4 w-10">
+                  <div className="w-4 h-4 rounded bg-surface-variant animate-pulse"></div>
+                </th>
+                <th className="px-md py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Lead Contact</th>
                 <th className="px-md py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Status</th>
                 <th className="px-md py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Source</th>
                 <th className="px-md py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Date Added</th>
@@ -49,6 +70,9 @@ const LeadTable: React.FC<LeadTableProps> = ({ leads, isLoading }) => {
               {[1, 2, 3, 4, 5].map((i) => (
                 <tr key={i} className="animate-pulse">
                   <td className="px-gutter py-4">
+                    <div className="w-4 h-4 rounded bg-surface-variant"></div>
+                  </td>
+                  <td className="px-md py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-surface-variant"></div>
                       <div className="space-y-2">
@@ -92,7 +116,15 @@ const LeadTable: React.FC<LeadTableProps> = ({ leads, isLoading }) => {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-surface-container-low border-b border-outline-variant">
-              <th className="px-gutter py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Lead Contact</th>
+              <th className="px-gutter py-4 w-10">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 rounded border-outline text-primary focus:ring-primary cursor-pointer"
+                  checked={leads.length > 0 && selectedIds.length === leads.length}
+                  onChange={handleSelectAll}
+                />
+              </th>
+              <th className="px-md py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Lead Contact</th>
               <th className="px-md py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Status</th>
               <th className="px-md py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Source</th>
               <th className="px-md py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Date Added</th>
@@ -101,8 +133,20 @@ const LeadTable: React.FC<LeadTableProps> = ({ leads, isLoading }) => {
           </thead>
           <tbody className="divide-y divide-outline-variant">
             {leads.map((lead) => (
-              <tr key={lead.id} className="hover:bg-surface-container-high transition-colors cursor-pointer group">
-                <td className="px-gutter py-4">
+              <tr 
+                key={lead.id} 
+                className={`hover:bg-surface-container-high transition-colors cursor-pointer group ${selectedIds.includes(lead.id) ? 'bg-surface-container-high' : ''}`}
+                onClick={() => handleSelectOne(lead.id)}
+              >
+                <td className="px-gutter py-4" onClick={(e) => e.stopPropagation()}>
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 rounded border-outline text-primary focus:ring-primary cursor-pointer"
+                    checked={selectedIds.includes(lead.id)}
+                    onChange={() => handleSelectOne(lead.id)}
+                  />
+                </td>
+                <td className="px-md py-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold">
                       {getInitials(lead.name)}

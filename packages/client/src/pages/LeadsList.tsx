@@ -15,6 +15,7 @@ const LeadsList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('Latest');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedLeadIds, setSelectedLeadIds] = useState<string[]>([]);
   
   // Pagination state
   const [page, setPage] = useState(1);
@@ -60,6 +61,11 @@ const LeadsList: React.FC = () => {
     fetchLeads();
   }, [statusFilter, sourceFilter, debouncedSearch, page, sortBy]);
 
+  // Reset selection when leads change
+  useEffect(() => {
+    setSelectedLeadIds([]);
+  }, [leads]);
+
   // Reset page when filters change
   useEffect(() => {
     setPage(1);
@@ -67,6 +73,31 @@ const LeadsList: React.FC = () => {
 
   const handleNewLead = () => {
     setIsModalOpen(true);
+  };
+
+  const handleExport = async () => {
+    try {
+      const params: any = {};
+      if (selectedLeadIds.length > 0) {
+        params.ids = selectedLeadIds.join(',');
+      }
+
+      const response = await api.get('/leads/export', {
+        params,
+        responseType: 'blob'
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `leads_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error exporting leads:', error);
+    }
   };
 
   return (
@@ -78,11 +109,11 @@ const LeadsList: React.FC = () => {
         </div>
         <div className="flex gap-3">
           <button 
-            className="flex items-center gap-2 bg-secondary text-on-secondary px-lg py-md rounded-xl font-label-md text-label-md hover:opacity-90 transition-opacity"
-            onClick={() => console.log('Export CSV')}
+            className="flex items-center gap-2 bg-secondary text-on-secondary px-lg py-md rounded-xl font-label-md text-label-md hover:opacity-90 transition-opacity disabled:opacity-50"
+            onClick={handleExport}
           >
             <span className="material-symbols-outlined">download</span>
-            Export CSV
+            {selectedLeadIds.length > 0 ? `Export (${selectedLeadIds.length})` : 'Export All'}
           </button>
           <button 
             className="flex items-center gap-2 bg-primary text-on-primary px-lg py-md rounded-xl font-label-md text-label-md hover:opacity-90 transition-opacity"
@@ -162,7 +193,12 @@ const LeadsList: React.FC = () => {
       </div>
 
       <div className="bg-surface rounded-xl shadow-sm border border-outline-variant overflow-hidden">
-        <LeadTable leads={leads} isLoading={isLoading} />
+        <LeadTable 
+          leads={leads} 
+          isLoading={isLoading} 
+          selectedIds={selectedLeadIds}
+          onSelectChange={setSelectedLeadIds}
+        />
         <Pagination
           currentPage={pagination.currentPage}
           totalPages={pagination.pages}

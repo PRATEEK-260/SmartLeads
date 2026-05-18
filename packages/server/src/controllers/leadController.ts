@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
+import { Parser } from 'json2csv';
 import Lead from '../models/Lead';
 
 const createLeadSchema = z.object({
@@ -179,6 +180,43 @@ export const deleteLead = async (req: Request, res: Response) => {
       status: 'success',
       data: null,
     });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const exportLeads = async (req: Request, res: Response) => {
+  try {
+    const { ids } = req.query;
+    const query: any = {};
+
+    if (ids && typeof ids === 'string') {
+      query._id = { $in: ids.split(',') };
+    }
+
+    // RBAC: Sales only see their own leads
+    if (req.user.role === 'Sales') {
+      query.assignedTo = req.user.id;
+    }
+
+    const leads = await Lead.find(query).populate('assignedTo', 'name email').sort({ createdAt: -1 });
+
+    const fields = [
+      { label: 'ID', value: '_id' },
+      { label: 'Name', value: 'name' },
+      { label: 'Email', value: 'email' },
+      { label: 'Source', value: 'source' },
+      { label: 'Status', value: 'status' },
+      { label: 'Assigned To', value: 'assignedTo.name' },
+      { label: 'Created At', value: 'createdAt' }
+    ];
+
+    const parser = new Parser({ fields });
+    const csv = parser.parse(leads);
+
+    res.header('Content-Type', 'text/csv');
+    res.attachment('leads.csv');
+    return res.send(csv);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
