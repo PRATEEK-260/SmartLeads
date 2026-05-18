@@ -9,7 +9,11 @@
     "forceConsistentCasingInFileNames": true,
     "composite": true,
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@service-hive/shared": ["packages/shared/src"]
+    }
   },
   "files": [],
   "references": [

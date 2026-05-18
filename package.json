@@ -8,7 +8,7 @@
     "client": "npm run dev -w packages/client",
     "server": "npm run dev -w packages/server",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "tsc -b"
+    "build": "npm run build -w packages/shared && tsc -b"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
