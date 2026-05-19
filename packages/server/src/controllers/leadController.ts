@@ -19,6 +19,10 @@ const updateLeadSchema = z.object({
   assignedTo: z.string().optional(),
 });
 
+const escapeRegExp = (string: string) => {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+};
+
 export const getLeads = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
@@ -33,9 +37,10 @@ export const getLeads = async (req: Request, res: Response) => {
     if (status) query.status = status;
     if (source) query.source = source;
     if (search) {
+      const sanitizedSearch = escapeRegExp(search);
       query.$or = [
-        { name: new RegExp(search, 'i') },
-        { email: new RegExp(search, 'i') },
+        { name: new RegExp(sanitizedSearch, 'i') },
+        { email: new RegExp(sanitizedSearch, 'i') },
       ];
     }
 
