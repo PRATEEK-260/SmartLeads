@@ -2,7 +2,7 @@
 
 ## Base URL
 Local Development: `http://localhost:5000/api`
-Production: `https://<your-render-url>.onrender.com/api`
+Production: `https://smartleads-f7w4.onrender.com/api`
 
 ## Authentication
 

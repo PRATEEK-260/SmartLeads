@@ -1,116 +1,115 @@
-# Smart Leads Dashboard
+# 🐝 Smart Leads Dashboard
 
-A full-stack Lead Management Dashboard built strictly using the **MERN stack, TypeScript, and TailwindCSS**. This project was developed as part of the ServiceHive Full Stack Internship Assignment.
+A high-performance, full-stack Lead Management Dashboard architected with the **MERN stack**, **TypeScript**, and **TailwindCSS**. Developed with a focus on security, scalability, and exceptional user experience as part of the ServiceHive Full Stack Internship Assignment.
 
-## 🚀 Live Demo & Credentials
-* **Frontend (Vercel):** [https://smartleads-coral.vercel.app](https://smartleads-coral.vercel.app) *(Replace with your actual Vercel link!)*
-* **Backend API (Render):** [https://smartleads-f7w4.onrender.com/health](https://smartleads-f7w4.onrender.com/health)
+## 🌐 Live Demo & Access
 
-**Test Admin Credentials:**
-- **Email:** `admin@servicehive.com`
-- **Password:** `password123`
+*   **✨ Frontend (Vercel):** [https://smart-leads-client-three.vercel.app/](https://smart-leads-client-three.vercel.app/)
+*   **🔌 Backend API (Render):** [https://smartleads-f7w4.onrender.com/health](https://smartleads-f7w4.onrender.com/health)
 
----
-
-## 🛠️ Tech Stack
-* **Frontend:** React.js, TypeScript (Strict), TailwindCSS (v4), Vite.
-* **Backend:** Node.js, Express.js, TypeScript, MongoDB (Mongoose), JWT, Zod.
-* **Shared Architecture:** NPM Workspaces for shared TypeScript interfaces across the stack.
-* **DevOps:** Docker, Docker Compose.
+### 🔑 Test Credentials
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| **Admin** | `admin@servicehive.com` | `password123` |
 
 ---
 
-## ✨ Features Implemented
+## 🚀 Tech Stack
 
-### 1. Authentication System
-* JWT-based authentication flow with secure password hashing (`bcrypt`).
-* Protected React routes and secure Express middleware.
-* **Role-Based Access Control (RBAC):** First user defaults to `Admin`, subsequent users default to `Sales`. 
-  * `Admin` can see all leads.
-  * `Sales` can only see their own assigned leads.
-
-### 2. Leads Management (CRUD)
-* Full creation, viewing, updating, and deletion of Leads.
-* Contains required fields: Name, Email, Status (`New`, `Contacted`, `Qualified`, `Lost`), Source (`Website`, `Instagram`, `Referral`), and Created At.
-
-### 3. Advanced Filtering, Search & Pagination
-* **Multiple Concurrent Filters:** Combine Status, Source, and Search seamlessly.
-* **Debounced Search:** Custom `useDebounce` hook implemented on the frontend to prevent excessive API calls while searching by Name or Email.
-* **Sorting:** Sort leads by Latest or Oldest.
-* **Server-Side Pagination:** Strict limit of 10 records per page using MongoDB `skip` and `limit`, returning pagination metadata to the frontend.
-
-### 4. Professional UI/UX
-* Fully responsive layout with beautiful Glassmorphism touches.
-* Comprehensive Loading states, Empty States, and Error handling UI.
-* **Bonus Feature: Dark Mode Support!** Fully integrated Dark Mode toggle in the TopBar using Tailwind CSS variable swapping.
-
-### 5. API Standards & Additional Features
-* Complete RESTful API architecture with centralized error handling.
-* Strict request validation using **Zod**.
-* **CSV Export Functionality:** Bulk export selected leads (or all leads) directly to a CSV file from the frontend via the `json2csv` backend endpoint.
+*   **Frontend:** React 19, TypeScript (Strict Mode), TailwindCSS v4, Vite.
+*   **Backend:** Node.js, Express.js, TypeScript, MongoDB (Mongoose), JWT, Zod.
+*   **Architecture:** Monorepo using **NPM Workspaces** for seamless shared type safety.
+*   **DevOps:** Docker & Docker Compose for standardized environments.
 
 ---
 
-## 📂 Project Structure (Monorepo)
+## 💎 Core Features
+
+### 🛡️ 1. Enterprise-Grade Authentication
+*   **Secure Flow:** JWT-based authentication with `bcrypt` password hashing.
+*   **RBAC (Role-Based Access Control):** 
+    *   **Admin:** Complete oversight of all leads across the platform.
+    *   **Sales:** Focused view restricted to their own assigned leads.
+*   **Protected Routing:** High-order components for frontend route guarding and robust middleware for API security.
+
+### 📋 2. Intelligent Lead Management
+*   **Full CRUD:** Comprehensive creation, retrieval, updates, and deletion of leads.
+*   **Detailed Tracking:** Monitor Name, Email, Status (`New`, `Contacted`, `Qualified`, `Lost`), and Source (`Website`, `Instagram`, `Referral`).
+
+### 🔍 3. Advanced Data Orchestration
+*   **Multi-Criteria Filtering:** Seamlessly combine Status, Source, and Search queries.
+*   **Performant Search:** Custom `useDebounce` hook to minimize API overhead while providing real-time results.
+*   **Server-Side Pagination:** Optimized MongoDB `skip/limit` logic with a strict 10-record-per-page threshold.
+
+### 🎨 4. Premium UI/UX
+*   **Modern Aesthetics:** Responsive layout featuring sleek glassmorphism and Tailwind v4.
+*   **State Management:** Comprehensive handling for Loading, Empty, and Error states.
+*   **🌓 Dark Mode:** Fully integrated, accessible dark mode toggle.
+
+### 📊 5. API & Data Export
+*   **RESTful Excellence:** Standardized JSON responses and centralized error handling.
+*   **Data Integrity:** Strict request validation powered by **Zod**.
+*   **Bulk Export:** Direct-to-CSV functionality for selected leads via `json2csv`.
+
+---
+
+## 📂 Project Structure
 
 ```text
 ServiceHive/
 ├── packages/
-│   ├── client/           # React frontend (Vite)
-│   ├── server/           # Express backend (Node)
-│   └── shared/           # Shared TS interfaces (IUser, ILead)
-├── API.md                # Detailed API Documentation
-├── Dockerfile.client     # Frontend Docker configuration
-├── Dockerfile.server     # Backend Docker configuration
-├── docker-compose.yml    # Container orchestration
+│   ├── client/           # React frontend (Vite + Tailwind v4)
+│   ├── server/           # Express backend (Node + TypeScript)
+│   └── shared/           # Shared TypeScript interfaces (IUser, ILead)
+├── API.md                # Detailed API Specification
+├── Dockerfile.client     # Optimized Frontend Docker config
+├── Dockerfile.server     # Standardized Backend Docker config
+├── docker-compose.yml    # Full-stack container orchestration
 └── package.json          # Root workspace configuration
 ```
 
 ---
 
-## ⚙️ Setup Instructions
+## 🛠️ Setup & Installation
 
 ### Prerequisites
-* Node.js (v20+)
-* Docker & Docker Compose (Optional)
-* MongoDB (Cloud or Local)
+*   Node.js (v20+)
+*   Docker & Docker Compose (Optional)
+*   MongoDB (Atlas or Local)
 
-### 1. Local Development (Without Docker)
+### 1. Local Development (Traditional)
 
-1. **Clone the repository:**
-   ```bash
-   git clone <repository-url>
-   cd ServiceHive
-   ```
-2. **Install all workspace dependencies:**
-   ```bash
-   npm install
-   ```
-3. **Configure Environment Variables:**
-   Rename `.env.example` to `.env` in the root folder and configure your `MONGODB_URI`.
-4. **Seed the Database (Optional but recommended):**
-   ```bash
-   cd packages/server
-   npx ts-node src/seed.ts
-   cd ../..
-   ```
-5. **Start the Development Servers:**
-   ```bash
-   npm run dev
-   ```
-   *(Frontend: `http://localhost:5173`, Backend: `http://localhost:5000`)*
+1.  **Clone & Enter:**
+    ```bash
+    git clone <repository-url>
+    cd ServiceHive
+    ```
+2.  **Install Dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Environment Setup:**
+    Configure `.env` in the root folder using `.env.example` as a template.
+4.  **Seed Data (Recommended):**
+    ```bash
+    cd packages/server && npx ts-node src/seed.ts && cd ../..
+    ```
+5.  **Launch:**
+    ```bash
+    npm run dev
+    ```
+    *   **Frontend:** `http://localhost:5173`
+    *   **Backend:** `http://localhost:5000`
 
-### 2. Running with Docker Compose
+### 2. Docker Execution
 
-1. **Start the containers:**
-   ```bash
-   docker-compose up --build
-   ```
-2. **Access the application:**
-   * Frontend: `http://localhost`
-   * Backend API: `http://localhost:5000`
+```bash
+docker-compose up --build
+```
+*   **App:** `http://localhost`
+*   **API:** `http://localhost:5000`
 
 ---
 
-## 📚 API Documentation
-Please refer to [API.md](./API.md) for detailed endpoint structures, request payloads, and response formats.
+## 📖 Documentation
+For a deep dive into the API endpoints and data structures, please see [API.md](./API.md).
