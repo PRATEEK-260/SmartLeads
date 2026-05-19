@@ -20,14 +20,19 @@ const updateLeadSchema = z.object({
   assignedTo: z.string().optional(),
 });
 
+const getLeadsQuerySchema = z.object({
+  page: z.string().optional().transform(val => (val ? parseInt(val, 10) : 1)),
+  limit: z.string().optional().transform(val => (val ? parseInt(val, 10) : 10)),
+  search: z.string().optional(),
+  sortBy: z.string().optional().default('Latest'),
+  status: z.string().optional(),
+  source: z.string().optional(),
+});
+
 export const getLeads = async (req: Request, res: Response) => {
   try {
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
-    const search = typeof req.query.search === 'string' ? req.query.search : undefined;
-    const sortBy = req.query.sortBy as string;
-    const status = req.query.status as string;
-    const source = req.query.source as string;
+    const validatedQuery = getLeadsQuerySchema.parse(req.query);
+    const { page, limit, search, sortBy, status, source } = validatedQuery;
 
     const query: any = {};
 
