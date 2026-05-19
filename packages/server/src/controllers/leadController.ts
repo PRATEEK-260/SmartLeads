@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { z } from 'zod';
 import { Parser } from 'json2csv';
 import Lead from '../models/Lead';
+import { escapeRegExp } from '../utils/regex';
 
 const createLeadSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -19,15 +20,11 @@ const updateLeadSchema = z.object({
   assignedTo: z.string().optional(),
 });
 
-const escapeRegExp = (string: string) => {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
-};
-
 export const getLeads = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
-    const search = req.query.search as string;
+    const search = typeof req.query.search === 'string' ? req.query.search : undefined;
     const sortBy = req.query.sortBy as string;
     const status = req.query.status as string;
     const source = req.query.source as string;
