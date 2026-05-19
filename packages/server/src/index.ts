@@ -48,6 +48,17 @@ app.use(cors({
   credentials: true
 }));
 
+// Error handling middleware for CORS errors
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  if (err && err.message === 'The CORS policy for this site does not allow access from the specified Origin.') {
+    return res.status(403).json({
+      status: 'error',
+      message: err.message
+    });
+  }
+  next(err);
+});
+
 // Limit payload size to 10kb to prevent DOS
 app.use(express.json({ limit: '10kb' }));
 app.use('/api', limiter); // Apply rate limiter to all API routes
