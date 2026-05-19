@@ -17,6 +17,9 @@ declare global {
 
 export const protect = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    if (!process.env.JWT_SECRET) {
+      throw new Error('JWT_SECRET must be defined in environment variables');
+    }
     let token;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];
@@ -26,7 +29,7 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
       return res.status(401).json({ message: 'You are not logged in' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret') as JwtPayload;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
 
     const currentUser = await User.findById(decoded.id);
     if (!currentUser) {
