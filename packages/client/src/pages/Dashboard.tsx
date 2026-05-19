@@ -5,15 +5,11 @@ import {
   CheckCircle, 
   XCircle, 
   Calendar,
-  ChevronRight,
-  ChevronLeft,
   ArrowUpRight,
   ArrowDownRight,
-  Filter,
-  Download,
-  Edit,
-  Trash2
+  ArrowRight
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import api from '../services/api';
 import type { ILead } from '@service-hive/shared';
 
@@ -145,16 +141,8 @@ const Dashboard: React.FC = () => {
       <div className="bg-surface rounded-2xl shadow-sm border border-outline-variant overflow-hidden">
         <div className="p-lg flex justify-between items-center border-b border-outline-variant">
           <h3 className="font-headline-sm text-headline-sm text-on-surface">Recent Leads</h3>
-          <div className="flex gap-2">
-            <button className="p-2 hover:bg-surface-container-high rounded-lg transition-colors text-on-surface-variant">
-              <Filter className="w-5 h-5" />
-            </button>
-            <button className="p-2 hover:bg-surface-container-high rounded-lg transition-colors text-on-surface-variant">
-              <Download className="w-5 h-5" />
-            </button>
-          </div>
         </div>
-        
+
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
@@ -190,16 +178,6 @@ const Dashboard: React.FC = () => {
                     <td className="px-lg py-5 text-on-surface-variant">
                       {new Date(lead.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </td>
-                    <td className="px-lg py-5">
-                      <div className="flex gap-2">
-                        <button className="p-1.5 hover:bg-surface-container-high rounded-md transition-colors text-on-surface-variant hover:text-primary">
-                          <Edit className="w-4.5 h-4.5" />
-                        </button>
-                        <button className="p-1.5 hover:bg-surface-container-high rounded-md transition-colors text-on-surface-variant hover:text-error">
-                          <Trash2 className="w-4.5 h-4.5" />
-                        </button>
-                      </div>
-                    </td>
                   </tr>
                 ))
               )}
@@ -209,16 +187,11 @@ const Dashboard: React.FC = () => {
         
         <div className="p-lg flex justify-between items-center border-t border-outline-variant bg-surface-container-low">
           <p className="text-sm font-medium text-on-surface-variant">
-            Showing 4 of {stats.totalLeads.toLocaleString()} leads
+            Showing latest leads
           </p>
-          <div className="flex gap-2">
-            <button className="p-2 border border-outline-variant rounded-xl hover:bg-surface-container transition-colors disabled:opacity-30" disabled>
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button className="p-2 border border-outline-variant rounded-xl hover:bg-surface-container transition-colors">
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
+          <Link to="/leads" className="text-sm font-medium text-primary hover:underline flex items-center gap-1">
+            View all leads <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
 

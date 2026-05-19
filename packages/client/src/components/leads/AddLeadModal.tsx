@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
-import type { LeadStatus, LeadSource, IUser } from '@service-hive/shared';
+import type { LeadStatus, LeadSource, IUser, ILead } from '@service-hive/shared';
 
 interface AddLeadModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  leadToEdit?: ILead | null;
 }
 
-const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onSuccess }) => {
+const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onSuccess, leadToEdit }) => {
   const { user: currentUser } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -21,20 +22,34 @@ const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onSuccess 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (isOpen && currentUser?.role === 'Admin') {
-      const fetchUsers = async () => {
-        try {
-          const response = await api.get('/auth/users');
-          setUsers(response.data.data.users);
-          // Default to current user if none selected
-          setAssignedTo(currentUser.id);
-        } catch (error) {
-          console.error('Error fetching users:', error);
-        }
-      };
-      fetchUsers();
+    if (isOpen) {
+      if (leadToEdit) {
+        setName(leadToEdit.name);
+        setEmail(leadToEdit.email);
+        setStatus(leadToEdit.status as LeadStatus);
+        setSource(leadToEdit.source as LeadSource);
+        setAssignedTo(typeof leadToEdit.assignedTo === 'string' ? leadToEdit.assignedTo : (leadToEdit.assignedTo as any)?._id || currentUser?.id || '');
+      } else {
+        setName('');
+        setEmail('');
+        setStatus('New');
+        setSource('Website');
+        setAssignedTo(currentUser?.id || '');
+      }
+      
+      if (currentUser?.role === 'Admin') {
+        const fetchUsers = async () => {
+          try {
+            const response = await api.get('/auth/users');
+            setUsers(response.data.data.users);
+          } catch (error) {
+            console.error('Error fetching users:', error);
+          }
+        };
+        fetchUsers();
+      }
     }
-  }, [isOpen, currentUser]);
+  }, [isOpen, currentUser, leadToEdit]);
 
   if (!isOpen) return null;
 
@@ -69,15 +84,19 @@ const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onSuccess 
         payload.assignedTo = assignedTo;
       }
 
-      await api.post('/leads', payload);
+      if (leadToEdit) {
+        await api.put(`/leads/${leadToEdit.id}`, payload);
+      } else {
+        await api.post('/leads', payload);
+      }
       onSuccess();
       handleClose();
     } catch (error: any) {
-      console.error('Error creating lead:', error);
+      console.error('Error saving lead:', error);
       if (error.response?.data?.message) {
         setErrors({ email: error.response.data.message });
       } else {
-        setErrors({ email: 'An error occurred while creating the lead' });
+        setErrors({ email: 'An error occurred while saving the lead' });
       }
     } finally {
       setIsSubmitting(false);
@@ -85,11 +104,6 @@ const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onSuccess 
   };
 
   const handleClose = () => {
-    setName('');
-    setEmail('');
-    setStatus('New');
-    setSource('Website');
-    setAssignedTo(currentUser?.id || '');
     setErrors({});
     onClose();
   };
@@ -100,7 +114,7 @@ const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onSuccess 
       <div className="w-full max-w-[512px] min-w-[320px] bg-surface-container-lowest rounded-xl shadow-[0px_20px_25px_-5px_rgba(0,0,0,0.1),0px_8px_10px_-6px_rgba(0,0,0,0.1)] border border-outline-variant overflow-hidden flex flex-col">
         {/* Modal Header */}
         <div className="px-lg py-md border-b border-outline-variant flex items-center justify-between">
-          <h2 className="font-headline-sm text-headline-sm text-on-surface">New Lead</h2>
+          <h2 className="font-headline-sm text-headline-sm text-on-surface">{leadToEdit ? 'Edit Lead' : 'New Lead'}</h2>
           <button 
             onClick={handleClose}
             className="material-symbols-outlined text-outline hover:text-on-surface transition-colors"
@@ -204,7 +218,7 @@ const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onSuccess 
               disabled={isSubmitting}
               className="bg-primary text-on-primary px-lg py-2 rounded-xl font-label-md text-label-md shadow-sm hover:opacity-90 transition-opacity disabled:opacity-50"
             >
-              {isSubmitting ? 'Saving...' : 'Save'}
+              {isSubmitting ? 'Saving...' : (leadToEdit ? 'Save Changes' : 'Create Lead')}
             </button>
           </div>
         </form>

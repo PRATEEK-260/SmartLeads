@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, Terminal } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import AuthLayout from '../components/layout/AuthLayout';
@@ -83,26 +83,6 @@ const Login: React.FC = () => {
           {!loading && <ArrowRight className="w-4.5 h-4.5" />}
         </button>
       </form>
-
-      <div className="relative my-xl">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-outline-variant"></div>
-        </div>
-        <div className="relative flex justify-center text-xs">
-          <span className="bg-surface-container-lowest px-md text-on-surface-variant">Or continue with</span>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-md">
-        <button className="flex items-center justify-center gap-sm h-11 border border-outline-variant rounded-lg bg-surface hover:bg-surface-container transition-colors">
-          <img alt="Google" className="w-4 h-4" src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" />
-          <span className="text-sm font-medium text-on-surface-variant">Google</span>
-        </button>
-        <button className="flex items-center justify-center gap-sm h-11 border border-outline-variant rounded-lg bg-surface hover:bg-surface-container transition-colors">
-          <Terminal className="w-5 h-5 text-on-surface" />
-          <span className="text-sm font-medium text-on-surface-variant">SSO</span>
-        </button>
-      </div>
 
       <p className="mt-lg text-center text-sm text-on-surface-variant">
         Don't have an account? 

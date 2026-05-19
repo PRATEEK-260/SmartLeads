@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import type { ILead } from '@service-hive/shared';
 
 interface LeadTableProps {
@@ -6,9 +6,25 @@ interface LeadTableProps {
   isLoading: boolean;
   selectedIds: string[];
   onSelectChange: (ids: string[]) => void;
+  onEdit: (lead: ILead) => void;
+  onDelete: (id: string) => void;
 }
 
-const LeadTable: React.FC<LeadTableProps> = ({ leads, isLoading, selectedIds, onSelectChange }) => {
+const LeadTable: React.FC<LeadTableProps> = ({ leads, isLoading, selectedIds, onSelectChange, onEdit, onDelete }) => {
+  const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setActiveMenuId(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       onSelectChange(leads.map((lead) => lead.id));
@@ -172,10 +188,35 @@ const LeadTable: React.FC<LeadTableProps> = ({ leads, isLoading, selectedIds, on
                     year: 'numeric'
                   })}
                 </td>
-                <td className="px-gutter py-4 text-right">
-                  <button className="p-1 text-outline hover:text-primary transition-colors">
+                <td className="px-gutter py-4 text-right relative">
+                  <button 
+                    onClick={() => setActiveMenuId(activeMenuId === lead.id ? null : lead.id)}
+                    className="p-1 text-outline hover:text-primary transition-colors"
+                  >
                     <span className="material-symbols-outlined">more_vert</span>
                   </button>
+                  {activeMenuId === lead.id && (
+                    <div ref={menuRef} className="absolute right-8 top-10 bg-surface-container-lowest border border-outline-variant shadow-lg rounded-lg py-2 z-50 min-w-[120px]">
+                      <button 
+                        onClick={() => {
+                          onEdit(lead);
+                          setActiveMenuId(null);
+                        }}
+                        className="w-full text-left px-4 py-2 hover:bg-surface-container-high transition-colors font-body-sm text-on-surface"
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        onClick={() => {
+                          onDelete(lead.id);
+                          setActiveMenuId(null);
+                        }}
+                        className="w-full text-left px-4 py-2 hover:bg-surface-container-high transition-colors font-body-sm text-error"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}

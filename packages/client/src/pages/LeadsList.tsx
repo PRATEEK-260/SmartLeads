@@ -16,6 +16,7 @@ const LeadsList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('Latest');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingLead, setEditingLead] = useState<ILead | null>(null);
   const [selectedLeadIds, setSelectedLeadIds] = useState<string[]>([]);
   
   const location = useLocation();
@@ -26,6 +27,7 @@ const LeadsList: React.FC = () => {
     const params = new URLSearchParams(location.search);
     if (params.get('new') === 'true') {
       setIsModalOpen(true);
+      setEditingLead(null);
       // Clean up the URL
       navigate('/leads', { replace: true });
     }
@@ -214,6 +216,21 @@ const LeadsList: React.FC = () => {
           isLoading={isLoading} 
           selectedIds={selectedLeadIds}
           onSelectChange={setSelectedLeadIds}
+          onEdit={(lead) => {
+            setEditingLead(lead);
+            setIsModalOpen(true);
+          }}
+          onDelete={async (id) => {
+            if (window.confirm('Are you sure you want to delete this lead?')) {
+              try {
+                await api.delete(`/leads/${id}`);
+                fetchLeads();
+              } catch (error) {
+                console.error('Error deleting lead:', error);
+                alert('Failed to delete lead.');
+              }
+            }
+          }}
         />
         <Pagination
           currentPage={pagination.currentPage}
@@ -226,8 +243,12 @@ const LeadsList: React.FC = () => {
 
       <AddLeadModal 
         isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        onSuccess={fetchLeads} 
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingLead(null);
+        }} 
+        onSuccess={fetchLeads}
+        leadToEdit={editingLead}
       />
     </div>
   );
