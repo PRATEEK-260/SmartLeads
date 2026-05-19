@@ -1,20 +1,20 @@
-# 🐝 Smart Leads Dashboard
+# Smart Leads Dashboard
 
 A high-performance, full-stack Lead Management Dashboard architected with the **MERN stack**, **TypeScript**, and **TailwindCSS**. Developed with a focus on security, scalability, and exceptional user experience as part of the ServiceHive Full Stack Internship Assignment.
 
-## 🌐 Live Demo & Access
+## Live Demo & Access
 
-*   **✨ Frontend (Vercel):** [https://smart-leads-client-three.vercel.app/](https://smart-leads-client-three.vercel.app/)
-*   **🔌 Backend API (Render):** [https://smartleads-f7w4.onrender.com/health](https://smartleads-f7w4.onrender.com/health)
+*   **Frontend (Vercel):** [https://smart-leads-client-three.vercel.app/](https://smart-leads-client-three.vercel.app/)
+*   **Backend API (Render):** [https://smartleads-f7w4.onrender.com/health](https://smartleads-f7w4.onrender.com/health)
 
-### 🔑 Test Credentials
+### Test Credentials
 | Role | Email | Password |
 | :--- | :--- | :--- |
 | **Admin** | `admin@servicehive.com` | `password123` |
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 *   **Frontend:** React 19, TypeScript (Strict Mode), TailwindCSS v4, Vite.
 *   **Backend:** Node.js, Express.js, TypeScript, MongoDB (Mongoose), JWT, Zod.
@@ -23,37 +23,37 @@ A high-performance, full-stack Lead Management Dashboard architected with the **
 
 ---
 
-## 💎 Core Features
+## Core Features
 
-### 🛡️ 1. Enterprise-Grade Authentication
+### 1. Enterprise-Grade Authentication
 *   **Secure Flow:** JWT-based authentication with `bcrypt` password hashing.
 *   **RBAC (Role-Based Access Control):** 
     *   **Admin:** Complete oversight of all leads across the platform.
     *   **Sales:** Focused view restricted to their own assigned leads.
 *   **Protected Routing:** High-order components for frontend route guarding and robust middleware for API security.
 
-### 📋 2. Intelligent Lead Management
+### 2. Intelligent Lead Management
 *   **Full CRUD:** Comprehensive creation, retrieval, updates, and deletion of leads.
 *   **Detailed Tracking:** Monitor Name, Email, Status (`New`, `Contacted`, `Qualified`, `Lost`), and Source (`Website`, `Instagram`, `Referral`).
 
-### 🔍 3. Advanced Data Orchestration
+### 3. Advanced Data Orchestration
 *   **Multi-Criteria Filtering:** Seamlessly combine Status, Source, and Search queries.
 *   **Performant Search:** Custom `useDebounce` hook to minimize API overhead while providing real-time results.
 *   **Server-Side Pagination:** Optimized MongoDB `skip/limit` logic with a strict 10-record-per-page threshold.
 
-### 🎨 4. Premium UI/UX
+### 4. Premium UI/UX
 *   **Modern Aesthetics:** Responsive layout featuring sleek glassmorphism and Tailwind v4.
 *   **State Management:** Comprehensive handling for Loading, Empty, and Error states.
-*   **🌓 Dark Mode:** Fully integrated, accessible dark mode toggle.
+*   **Dark Mode:** Fully integrated, accessible dark mode toggle.
 
-### 📊 5. API & Data Export
+### 5. API & Data Export
 *   **RESTful Excellence:** Standardized JSON responses and centralized error handling.
 *   **Data Integrity:** Strict request validation powered by **Zod**.
 *   **Bulk Export:** Direct-to-CSV functionality for selected leads via `json2csv`.
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 ServiceHive/
@@ -70,7 +70,7 @@ ServiceHive/
 
 ---
 
-## 🛠️ Setup & Installation
+## Setup & Installation
 
 ### Prerequisites
 *   Node.js (v20+)
@@ -111,5 +111,5 @@ docker-compose up --build
 
 ---
 
-## 📖 Documentation
+## Documentation
 For a deep dive into the API endpoints and data structures, please see [API.md](./API.md).
