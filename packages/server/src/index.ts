@@ -13,6 +13,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+app.set('trust proxy', 1);
+
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -37,6 +39,8 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+export { app };
+
 const start = async () => {
   try {
     if (!process.env.MONGODB_URI) {
@@ -55,4 +59,6 @@ const start = async () => {
   }
 };
 
-start();
+if (process.env.NODE_ENV !== 'test') {
+  start();
+}
