@@ -16,10 +16,10 @@ declare global {
 }
 
 export const protect = async (req: Request, res: Response, next: NextFunction) => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET must be defined in environment variables');
+  }
   try {
-    if (!process.env.JWT_SECRET) {
-      throw new Error('JWT_SECRET must be defined in environment variables');
-    }
     let token;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];

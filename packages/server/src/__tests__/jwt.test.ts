@@ -9,6 +9,10 @@ describe('JWT Configuration', () => {
       signToken('test-id', 'Admin');
     }).toThrow('JWT_SECRET must be defined in environment variables');
     
-    process.env.JWT_SECRET = originalSecret;
+    if (originalSecret === undefined) {
+      delete process.env.JWT_SECRET;
+    } else {
+      process.env.JWT_SECRET = originalSecret;
+    }
   });
 });
