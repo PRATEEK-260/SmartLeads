@@ -47,7 +47,8 @@ export const register = async (req: Request, res: Response) => {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ message: error.errors[0].message });
     }
-    res.status(500).json({ message: error.message });
+    console.error('Auth Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -73,7 +74,8 @@ export const login = async (req: Request, res: Response) => {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ message: error.errors[0].message });
     }
-    res.status(500).json({ message: error.message });
+    console.error('Auth Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -87,7 +89,8 @@ export const getMe = async (req: any, res: Response) => {
       },
     });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    console.error('Auth Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -101,6 +104,7 @@ export const getUsers = async (req: Request, res: Response) => {
       },
     });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    console.error('Auth Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };

@@ -71,7 +71,8 @@ export const getLeads = async (req: Request, res: Response) => {
       },
     });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    console.error('Lead Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -101,7 +102,8 @@ export const createLead = async (req: Request, res: Response) => {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ message: error.errors[0].message });
     }
-    res.status(500).json({ message: error.message });
+    console.error('Lead Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -125,7 +127,8 @@ export const getLeadById = async (req: Request, res: Response) => {
       },
     });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    console.error('Lead Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -159,7 +162,8 @@ export const updateLead = async (req: Request, res: Response) => {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ message: error.errors[0].message });
     }
-    res.status(500).json({ message: error.message });
+    console.error('Lead Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -183,7 +187,8 @@ export const deleteLead = async (req: Request, res: Response) => {
       data: null,
     });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    console.error('Lead Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -220,6 +225,7 @@ export const exportLeads = async (req: Request, res: Response) => {
     res.attachment('leads.csv');
     return res.send(csv);
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    console.error('Lead Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
